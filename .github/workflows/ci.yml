@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Validate JSON (Node ${{ matrix.node-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20, 22, 24]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Validate JSON configs
+        run: pnpm test
+
+  pack-check:
+    name: Pack check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Pack
+        run: npm pack
+
+      - name: Verify pack contents
+        run: |
+          tar -tf *.tgz | sort
+          tar -tf *.tgz | grep -q "package/tsconfig.base.json" || (echo "MISSING: tsconfig.base.json" && exit 1)
+          tar -tf *.tgz | grep -q "package/tsconfig.library.json" || (echo "MISSING: tsconfig.library.json" && exit 1)
+          tar -tf *.tgz | grep -q "package/tsconfig.node.json" || (echo "MISSING: tsconfig.node.json" && exit 1)
+          tar -tf *.tgz | grep -q "package/tsconfig.react.json" || (echo "MISSING: tsconfig.react.json" && exit 1)
+          tar -tf *.tgz | grep -q "package/README.md" || (echo "MISSING: README.md" && exit 1)
+          tar -tf *.tgz | grep -q "package/LICENSE" || (echo "MISSING: LICENSE" && exit 1)
+          echo "Pack check passed"

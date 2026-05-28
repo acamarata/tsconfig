@@ -1,0 +1,48 @@
+{
+  "name": "@acamarata/tsconfig",
+  "version": "0.1.0",
+  "description": "Shared TypeScript configs for acamarata packages. Four variants: base, library, node, and react.",
+  "author": "Aric Camarata",
+  "license": "MIT",
+  "exports": {
+    "./tsconfig.base.json": "./tsconfig.base.json",
+    "./tsconfig.library.json": "./tsconfig.library.json",
+    "./tsconfig.node.json": "./tsconfig.node.json",
+    "./tsconfig.react.json": "./tsconfig.react.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "tsconfig.base.json",
+    "tsconfig.library.json",
+    "tsconfig.node.json",
+    "tsconfig.react.json",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node scripts/validate-json.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/acamarata/tsconfig.git"
+  },
+  "homepage": "https://github.com/acamarata/tsconfig#readme",
+  "bugs": {
+    "url": "https://github.com/acamarata/tsconfig/issues"
+  },
+  "keywords": [
+    "typescript",
+    "tsconfig",
+    "config",
+    "acamarata"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "packageManager": "pnpm@10.11.1"
+}
